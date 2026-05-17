@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>猜數字遊戲</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; marginTop: 50px; }
+        .container { max-width: 400px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        input { padding: 8px; font-size: 16px; width: 60px; text-align: center; }
+        button { padding: 8px 15px; font-size: 16px; cursor: pointer; }
+        .message { margin-top: 15px; font-weight: bold; color: #333; }
+        .error { color: red; }
+        .success { color: green; font-size: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>猜數字遊戲</h2>
+    <p id="hint">請輸入 1-100 之間整數</p>
+    <input type="number" id="guessInput" min="1" max="100">
+    <button onclick="checkGuess()">送出</button>
+    <div id="msg" class="message"></div>
+</div>
+
+<script>
+    const answer = Math.floor(Math.random() * 100) + 1;
+    let min = 1;
+    let max = 100;
+
+    function checkGuess() {
+        const inputEl = document.getElementById('guessInput');
+        const hintEl = document.getElementById('hint');
+        const msgEl = document.getElementById('msg');
+        
+        let guess = parseInt(inputEl.value, 10);
+        msgEl.className = "message";
+
+        if (isNaN(guess) || guess < min || guess > max) {
+            msgEl.textContent = `請輸入有效區間內的數字！`;
+            msgEl.classList.add('error');
+            inputEl.value = '';
+            return;
+        }
+
+        if (guess === answer) {
+            msgEl.textContent = `猜中了，答案是：${answer}`;
+            msgEl.classList.add('success');
+            hintEl.textContent = "遊戲結束！";
+            inputEl.disabled = true;
+        } 
+
+        else {
+            if (guess < answer) {
+                min = guess;
+            } else {
+                max = guess;
+            }
+            hintEl.textContent = `請輸入${min}-${max}之間整數`;
+            msgEl.textContent = `沒猜中！答案在 ${min} 到 ${max} 之間。`;
+            inputEl.value = ''; 
+        }
+    }
+</script>
+
+</body>
+</html>
